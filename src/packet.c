@@ -35,25 +35,38 @@
  *		: 1 - Packet
  * RETURN	: None!
  * ---------------------------------------------------------- */
+
+/* Update - david@vorant.com  18 June 2007
+ * Try to detect whether the packet has an 802.1Q VLAN tag on it.  If so,
+ * try to automatically skip the tag and treat it as regular TCP/IP traffic.
+ * Otherwise the handler won't process the packet.  This is useful when,
+ * for example, you are monitoring a VLAN trunk line.
+ */
 void process_eth (const struct pcap_pkthdr* pkthdr, const u_char* packet)
 {
     struct ether_header *ethh;		/* net/ethernet.h */
+    u_char * my_packet;
+
+    my_packet = (u_char *)packet;
 
     /* Extract the ethernet header from the packet. */
-    ethh = (struct ether_header*) packet;
-
+    ethh = (struct ether_header*) my_packet;
+    if(ntohs(ethh->ether_type) == VLAN_ETHERTYPE) { /* strip the vlan tags */
+      ethh = (struct ether_header*) (packet + VLAN_HDRLEN);
+      my_packet += VLAN_HDRLEN;
+    }
     /* Determine what type of ethernet packet this is. */
     switch (ntohs(ethh->ether_type)) {
 	/* IP */
 	case ETHERTYPE_IP:
-	    process_ip (pkthdr, packet, sizeof(struct ether_header));
-	    break;
+	  process_ip (pkthdr, my_packet, sizeof(struct ether_header));
+	  break;
 
 	/* ARP */
 	case ETHERTYPE_ARP:
-	    process_arp (pkthdr, packet, sizeof(struct ether_header));
+	    process_arp (pkthdr, my_packet, sizeof(struct ether_header));
 	    break;
-
+ 
 	/* Unknown Type */
 	default:
 	    return;
@@ -113,8 +126,7 @@ void process_ip (const struct pcap_pkthdr* pkthdr, const u_char* packet, unsigne
     struct ip *iph;			/* netinet/ip.h */
 
     /* Extract the IP header from this packet. */
-    iph = (struct ip*)(packet + len);
-
+      iph = (struct ip*)(packet + len);
     /* Determine what type of IP packet this is. */
     switch (iph->ip_p) {
 	case IPPROTO_TCP:

@@ -40,13 +40,18 @@
 #endif /* ifdef LINUX */
 
 
+/* 802.1Q VLAN tags are 4 bytes long. */
+#define VLAN_HDRLEN 4
+
+/* This is the decimal equivalent of the VLAN tag's ether frame type */
+#define VLAN_ETHERTYPE 33024
+
 /* INCLUDES ---------------------------------------- */
 #include "global.h"
 
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
 #include <netinet/ip_icmp.h>
-
 
 /* DATA STRUCTURES --------------------------------- */
 

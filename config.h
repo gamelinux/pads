@@ -89,7 +89,7 @@
 #define OS LINUX
 
 /* "Operating System Type" */
-#define OS_TYPE "i586-pc-linux-gnu"
+#define OS_TYPE "x86_64-unknown-linux-gnu"
 
 /* Name of package */
 #define PACKAGE "pads"
