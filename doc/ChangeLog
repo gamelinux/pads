@@ -1,0 +1,37 @@
+Passive Asset Detection System
+$Id: ChangeLog,v 1.2 2005/06/15 22:06:52 mattshelton Exp $
+------------------------------------------
+v1.2
+* Banner Grab Feature - This feature will drop the banners of services into a
+libpcap formatted file.
+* FIFO Output - PADS will write data to a FIFO file.  This file is monitored
+by the new pads-archiver utility.  It will dramatically speed up performance.
+* Configuration File - Configuration parameters can be recorded in a file.
+For more information, see the pads.conf man page.
+* Internal Rewrites - A lot of code rewrites have been put into this version
+for performance and security reasons.
+
+v1.1.3
+* MAC Address Vendor Resolution - PADS will now attempt to resolve the vendor
+name of a MAC address.
+* Bug Fixes
+
+v1.1.2
+* Bug Fixes
+* Code Optimizations
+* New Signatures
+
+v1.1.1
+* Fixed a buffer overflow vulnerability in main().
+
+v1.1
+* Network Restriction - Networks can now be specified on the command line using the '-n' switch.
+This will cause PADS to only record assets that fall within the specified networks.
+* ARP Support - ARP Reply packets are used to retrieve an asset's MAC address.
+* ICMP Support - The application now looks for ICMP Echo Reply packets.
+* SLL Frame Relay Support
+* Daemonize - PADS will go into the background whenever '-D' is specified on the command line.
+* Converted all data structures to linked lists.
+
+v1.0
+* Initial Release

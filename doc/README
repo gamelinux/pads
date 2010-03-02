@@ -1,0 +1,88 @@
+pads - Passive Asset Detection System
+v1.2 - 06/17/05
+Matt Shelton <matt@mattshelton.com>
+
+Goals:
+
+- Passive:  Records and identifies traffic seen on a network without actively "scanning" a system.
+  There will never be a packet sent from the pads applications.
+
+- Portable:  Has the ability to be placed easily on a remote system.  Does not require additional
+  external libraries other than those associated with libpcap.
+
+- Lightweight:  Logging is sent to a simple CSV file.  There is no need for a database or other data
+  repository installed on the local machine.  All correlation is done outside of the pads program.
+
+
+Description:
+
+Asset management is an important factor in information security.  A good security administrator should
+keep track of all devices attached to the network.  Even though active scanners such as nmap and Nessus
+are valuable tools, sometimes it necessary to identify network devices in a passive manner.  Pads was
+developed to sit along side the promiscuous interface of an IDS device.  It will listen to network traffic
+and attempt to identify the applications running on the network.
+
+
+Author's Notes:
+
+By day I am an IDS analyst for a managed security provider.  One of the challenges I face on a daily
+basis is the inability to obtain customer asset data, particularly with the larger customers.  This
+information is critical not only for analysis but also device placement and tuning.
+
+Many IDS deployments consist of a device with two interfaces.  One interface contains a promiscuous
+link to a remote network and the other link is for management and lives in the DMZ.  This makes
+active network scanners, like nmap, useless because the IDS team does not have anything but a one
+way link into the network.  They can only listen to traffic, not produce anything.
+
+Pads was developed to solve this problem.  It is modeled after my favorite scanning tool nmap,
+specifically the .-sV. option.  Unlike nmap, it will not generate any traffic while mapping the
+network.  Unfortunately, this method is potentially less accurate than active scanning but is often
+necessary in an IDS environment.
+
+As mentioned earlier, I am an IDS analyst by day.  I see programming as a tool to aid me in my job.
+This project was developed outside of work since I do not get paid to code.  It was written to
+fulfill a need for me.  Hopefully others within the community will also get the chance to benefit
+from it.
+
+
+Usage:
+-c <file>      : Read configuration from <file>.
+-d <file>      : Dump banner packets to a libpcap formatted file.
+-D             : Run PADS in the background (daemon mode).
+-g <group>     : Drop privileges to this group.
+-h             : Help
+-i <interface> : Listen on <interface>.  The lowest number interface
+                 will be used if an interface isn't specified.
+-n <network>   : Reads in a comma seperated list of networks
+                 to be monitored.
+                    ex.  -n "192.168.0.0/24,10.0.0.0/16"
+-p <file>      : PID file used with daemon mode.
+-r <file>      : Read packets from a libpcap formatted file.
+-u <user>      : Drop privileges to this user.
+-v             : Verbose
+-V             : Version
+-w <file>      : Dump data into file other than assets.csv.
+
+Additional arguments will be processed as a libpcap filter.  For example,
+the following command will not only use interface hme1 but will also only
+search for assets on port 22:
+
+pads -i hme1 port 22
+
+Misc:
+
+Regular expression support is provided by the PCRE library package, which is open source software,
+written by Philip Hazel, and copyright by the University of Cambridge, England.  It can be found on
+the following FTP site:
+	ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
+
+
+Feedback:
+
+Please let me know if you have constuctive feedback, need help, or have a bug / issue with the
+application.  For the time being, please contact me at matt@mattshelton.com.
+
+Thanks,
+Matt Shelton
+
+$Id: README,v 1.2 2005/06/15 22:09:34 mattshelton Exp $

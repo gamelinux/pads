@@ -1,0 +1,28 @@
+Installation
+------------
+To install PADS, execute the following standard 'autoconf' commands:
+
+	./configure
+	make
+	make install
+
+Optionally, run './configure --help' for additional command line options.  The following
+options may be used:
+
+--disable-vendor	: This option will disable MAC vendor resolution.  This will
+			: speed up the application.
+
+--enable-banner-grab	: Compile in the banner grabbing feature.  This feature will
+			: dump the asset banners into a libpcap-formatted file.  This
+			: feature will help further identify services and will aid in
+			: signature development.  Please keep in mind that this will
+			: slow down performance
+
+--use-native-pcre	: Use the existing PCRE libraries instead of the ones included.
+			: This will shrink the size of the executable.
+
+The libpcap library must be installed before you compile pads.  It can be downloaded from
+http://www.tcpdump.org.
+
+Matt Shelton
+matt@mattshelton.com

@@ -1,0 +1,68 @@
+.\" pads-report.8
+.\"
+.\" Matt Shelton <matt@mattshelton.com>
+.\"
+.\" pads-report man page
+.\"
+.\" Copyright (C) 2004 Matt Shelton <matt@mattshelton.com>
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" $Id: pads-report.8,v 1.2 2005/06/15 22:02:19 mattshelton Exp $
+.TH PADS 8 2005/06/17
+
+.SH NAME
+pads-report \- PADS Text Reporting Module
+
+.SH SYNOPSIS
+.B pads-report <hnp> <-r
+.I file
+.B > <-w
+.I file
+.B >
+
+.SH DESCRIPTION
+
+pads-report is a Perl based reporting module to be used with Passive Asset Detection System (PADS).  It will take
+a raw PADS data file and process it into a readable text report.
+
+.SH OPTIONS
+.IP -h
+Display help / usage information.
+
+.IP -n
+Do not convert IP addresses to names.
+
+.IP -p
+Do not convert RFC 1918 IP addresses to names.  The \fI -n\fP option will
+override this option.
+
+.IP "-r file"
+Read packets from a libpcap formatted file.
+
+.IP "-w file"
+Dump data into a file other than assets.csv.
+
+.SH SEE ALSO
+pads(8)
+
+.SH COPYRIGHT
+Copyright (C) 2004 Matt Shelton <matt@mattshelton.com>
+
+.SH BUGS
+Please send bug reports to the author.
+
+.SH AUTHORS
+Matt Shelton <matt@mattshelton.com>

@@ -1,0 +1,90 @@
+.\" pads.conf.8
+.\"
+.\" Matt Shelton <matt@mattshelton.com>
+.\"
+.\" pads.conf man page
+.\"
+.\" Copyright (C) 2005 Matt Shelton <matt@mattshelton.com>
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" $Id: pads.conf.8,v 1.1 2005/06/15 21:57:12 mattshelton Exp $
+.TH pads.conf 8 2005/06/17
+
+.SH NAME
+pads.conf \- pads configuration file
+
+.SH DESCRIPTION
+
+This man page describes the format of the pads(8) configuration file.
+
+Empty lines and lines beginning with '#' are ignored.
+
+.SH PARAMETERS
+.IP "daemon [0/1]"
+his parameter determines whether the application will go into the background.
+0 = Disable, 1 = Enable
+
+.IP "pid_file <file>"
+Filename of the pads PID file.  This value should be set if you are
+planning on using daemon mode.  
+
+.IP "sig_file <file>"
+Alternate location for the pads-signature-list file.
+
+.IP "mac_file <file>"
+Alternate location for the pads-ether-codes file.
+
+.IP "user <username>"
+This is the name of the user pads will run as when started as root.
+
+.IP "group <groupname>"
+This is the name of the group pads will run as when started as root.
+
+.IP "interface <interface>"
+This contains the name of the interface PADS will listen to.
+
+.IP "filter <filter>"
+This value contains a libpcap filter to be applied to the PADS session.  For
+example, to filter only SSH traffice, specify "filter 'port 22'".
+
+.IP "network <network>"
+This string contains a comma seperated list of networks to be monitored.  Only
+assets found in these networks will be recorded.  For example, "network
+192.168.0.0/24,192.168.1.0/24,10.10.10.0/24".
+
+.IP "output screen"
+This output plugin displays PADS data to the screen.  When using the
+configuration file, it defaults to off.
+
+.IP "output csv: <filename>"
+This output plugin writes PADS data to a CSV file.  Optionally, a CSV filename
+can be specified as an argument.
+
+.IP "output fifo: <filename>"
+This output plugin writes PADS data to a FIFO file.  Optionally, a FIFO
+filename can be specified as an argument.
+
+.SH SEE ALSO
+pads(8)
+
+.SH COPYRIGHT
+Copyright (C) 2005 Matt Shelton <matt@mattshelton.com>
+
+.SH BUGS
+Please send bug reports to the author.
+
+.SH AUTHORS
+Matt Shelton <matt@mattshelton.com>

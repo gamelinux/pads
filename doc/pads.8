@@ -1,0 +1,131 @@
+.\" pads.8
+.\"
+.\" Matt Shelton <matt@mattshelton.com>
+.\"
+.\" PADS man page
+.\"
+.\" Copyright (C) 2004 Matt Shelton <matt@mattshelton.com>
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" $Id: pads.8,v 1.2 2005/06/15 21:57:51 mattshelton Exp $
+.TH PADS 8 2005/06/17
+
+.SH NAME
+pads \- Passive Asset Detection System
+
+.SH SYNOPSIS
+.B pads <DhUvV> <-c
+.I file
+.B > <-d
+.I file
+.B > <-g
+.I group
+.B > <-i
+.I interface
+.B > <-n
+.I network(s)
+.B > <-p
+.I file
+.B > <-r
+.I file
+.B > <-u
+.I file
+.B > <-w
+.I file
+.B > <expression>
+
+.SH DESCRIPTION
+
+PADS is a libpcap based detection engine used to passively detect network
+assets.  It is designed to complement IDS technology by providing context to
+IDS alerts.
+
+Goals:
+
+- Passive:  Records and identifies traffic seen on a network without actively
+  "scanning" a system.   There will never be a packet sent from the pads
+  application.
+
+- Portable:  Has the ability to be placed easily on a remote system.  Does not
+  require additional external libraries other than those associated with
+  libpcap.
+
+- Lightweight:  Logging is sent to a simple CSV file.  There is no need for a
+  database or other data repository installed on the local machine.  All
+  correlation is done outside of the pads program.
+
+.SH OPTIONS
+.IP -h
+Display help / usage information.
+
+.IP -D
+Run PADS in the background (daemon mode).
+
+.IP "-d file"
+Dump banner data into a libpcap formatted file.  This feature will dump the
+matched packet or the first 4 packets of an unmatched connection into a
+specified file.  This can be used to further identify a service and also aid
+with signature development.
+
+Please keep in mind that this feature must be compiled into the application in
+order to use it.  This can be done by adding '--enable-banner-grab' to the
+'configure' step.
+
+.IP "-g group"
+This switch allows you to specify a group that PADS will drop to after the
+libpcap interface has been initialized.
+
+.IP -h
+Display help
+
+.IP "-i interface"
+Specify an interface to be used.
+
+.IP "-n network list"
+Specify a set of networks to be monitored.  Only assets that exist within
+these networks will be recorded.  The networks should be specified in the
+following format:  \fI
+10.10.10.0/24,192.168.0.0/16 \fP.
+
+.IP "-p pid file"
+This switch allows you to specify a PID file to be used in conjunction with
+daemon (-D) mode.
+
+.IP "-r file"
+Read packets from a libpcap formatted file.
+
+.IP "-u user"
+This switch allows you to specify a user that PADS will drop to after the
+libpcap interface has been initialized.
+
+.IP "-w file"
+Dump data into a file other than assets.csv.
+
+.IP "\fI expression\fP"
+selects which packets will be processed.  Please see \fI tcpdump(1)\fP for
+details on the libpcap primitives.
+
+.SH SEE ALSO
+pads.conf(8), pads-report(8), pads-archiver(8), tcpdump(8), pcre(3)
+
+.SH COPYRIGHT
+Copyright (C) 2004 Matt Shelton <matt@mattshelton.com>
+
+.SH BUGS
+Please send bug reports to the author.
+
+.SH AUTHORS
+Matt Shelton <matt@mattshelton.com>
