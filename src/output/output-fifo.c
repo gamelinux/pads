@@ -264,6 +264,7 @@ end_output_fifo ()
  * OUTPUT   : IP in text form - Success
  *          : NULL - Error
  * ---------------------------------------------------------- */
+/*
 const char 
 *u_ntop(const struct in6_addr ip_addr, int af, char *dest)
 {
@@ -281,4 +282,4 @@ const char
     }
     return dest;
 }
-
+*/
