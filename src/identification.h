@@ -26,16 +26,6 @@
  *
  **************************************************************************/
 
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-#include <signal.h>
-
-#include "global.h"
-
-#include <netinet/ip.h>
-#include <netinet/tcp.h>
-
-
 /* PROTOTYPES -------------------------------------- */
 int init_identification(void);
 int parse_raw_signature (bstring line, int lineno);

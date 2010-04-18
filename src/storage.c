@@ -24,6 +24,9 @@
  * $Id: storage.c,v 1.3 2005/02/16 01:47:35 mattshelton Exp $
  *
  **************************************************************************/
+#include "global.h"
+
+#include "mac-resolution.h"
 #include "storage.h"
 
 Asset *asset_list;
@@ -441,7 +444,7 @@ inline Asset *
 find_asset (struct in_addr ip_addr, u_int16_t port, unsigned short proto)
 {
     Asset *list;
-    Asset *rec;
+    Asset *rec = NULL;
 
     list = asset_list;
 
@@ -510,7 +513,7 @@ void print_database ()
     while (rec != NULL) {
 	printf("%d:  %s,%d,%d,%d,%s,%s,%d\n",
 		id, inet_ntoa(rec->ip_addr), ntohs(rec->port),
-		rec->proto, rec->discovered,
+		rec->proto, (int)rec->discovered,
 		bdata(rec->service), bdata(rec->application),
 		rec->i_attempts);
 	rec = rec->next;
@@ -523,11 +526,82 @@ void print_database ()
     arp = arp_asset_list;
     while (arp != NULL) {
 	printf("%d:  %s,%s,%d\n", id, inet_ntoa(arp->ip_addr),
-		ether_ntoa(&arp->mac_addr), arp->discovered);
+		ether_ntoa(&arp->mac_addr), (int)arp->discovered);
 	arp = arp->next;
 	id++;
     }
     printf("-- End ARP Database --\n\n");
 }
 #endif /* DEBUG */
+
+/* ----------------------------------------------------------
+ * FUNCTION	: add_asset_csv
+ * DESCRIPTION	: This function will add an asset to the
+ *		: specified asset data structure.
+ * INPUT	: 0 - IP Address
+ *		: 1 - Port
+ *		: 2 - Protocol
+ *		: 3 - Service
+ *		: 4 - Application
+ *		: 5 - Discovered
+ * RETURN	: None!
+ * ---------------------------------------------------------- */
+void add_asset_csv (struct in_addr ip_addr,
+		u_int16_t port,
+		unsigned short proto,
+		bstring service,
+		bstring application,
+		time_t discovered)
+{
+    Asset *rec;
+    Asset *list;
+
+    /* Assign list to temp structure.  */
+    rec = (Asset*)malloc(sizeof(Asset));
+    rec->ip_addr.s_addr = ip_addr.s_addr;
+    rec->port = port;
+    rec->proto = proto;
+    rec->service = bstrcpy(service);
+    rec->application = bstrcpy(application);
+    rec->next = NULL;
+
+    /*
+     * If this device has been read from a report file, set
+     * the discovered time to whatever is in the report.
+     * Also, we don't want to try to identify this service
+     * anymore (i_attempts = 0);
+     */
+    if (!discovered) {
+	rec->discovered = time(NULL);
+	rec->i_attempts = I_ATTEMPTS;
+    } else {
+	rec->discovered = discovered;
+	rec->i_attempts = 0;
+    }
+
+    /*
+     * ICMP packets will not be identified, set i_attempts
+     * to zero.
+     */
+    if (proto == IPPROTO_ICMP) {
+	rec->i_attempts = 0;
+    }
+
+    /* Find this record's location within linked list.  */
+    if (asset_list == NULL) {
+	asset_list = rec;
+    } else {
+	list = asset_list;
+	while (list != NULL) {
+	    if (list->next == NULL) {
+		list->next = rec;
+		break;
+	    } else {
+		list = list->next;
+	    }
+	}
+    }
+
+    return;
+}
 

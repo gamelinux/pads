@@ -32,10 +32,7 @@
 
 /* DEFINES ----------------------------------------- */
 
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-#include "global.h"
-
+#include <bstring/bstrlib.h>
 
 /* PROTOTYPES -------------------------------------- */
 int init_mac_resolution (void);

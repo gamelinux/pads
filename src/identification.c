@@ -25,7 +25,22 @@
  * $Id: identification.c,v 1.5 2005/05/14 20:14:34 mattshelton Exp $
  *
  **************************************************************************/
+
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+ 
+#include <stdio.h>
+#include <signal.h>
+ 
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
+#include <string.h>
+#include <unistd.h>
+ 
 #include "identification.h"
+#include "util.h"
+#include "storage.h"
+#include "output/output.h"
 
 Signature *signature_list;
 
@@ -73,7 +88,7 @@ int init_identification()
     bdestroy(filename);
     bdestroy(filedata);
     bstrListDestroy(lines);
-    close(fp);
+    fclose(fp);
 
     return 0;
 }
@@ -91,9 +106,9 @@ int init_identification()
 int parse_raw_signature (bstring line, int lineno)
 {
     struct bstrList *raw_sig;
-    struct bstrList *title;
+    struct bstrList *title = NULL;
     Signature *sig;
-    bstring pcre_string;
+    bstring pcre_string = NULL;
     const char *err;            /* PCRE */
     int erroffset;              /* PCRE */
     int ret = 0;
@@ -101,7 +116,7 @@ int parse_raw_signature (bstring line, int lineno)
 
     /* Check to see if this line has something to read. */
     if (line->data[0] == '\0' || line->data[0] == '#')
-        return;
+        return -1;
 
     /* Split Line */
     if ((raw_sig = bsplit(line, ',')) == NULL)
@@ -270,7 +285,6 @@ int pcre_identify (struct in_addr ip_addr,
     Signature *list = signature_list;
     int rc;
     int ovector[15];
-    int i;
     bstring app;
 
     while (list != NULL) {
@@ -421,7 +435,7 @@ void print_signature()
         printf("2a: %s\n", bdata(list->title.app));
         printf("2b: %s\n", bdata(list->title.ver));
         printf("2c: %s\n", bdata(list->title.misc));
-        printf("3:  %s\n", list->regex);
+        printf("3:  %s\n", (char *)list->regex);
         printf("\n");
 
         i++;

@@ -27,7 +27,17 @@
  * $Id: monnet.c,v 1.3 2005/02/17 16:29:14 mattshelton Exp $
  *
  **************************************************************************/
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <arpa/inet.h>
+
 #include "monnet.h"
+#include "util.h"
 
 struct mon_net *mn;
 
@@ -45,7 +55,6 @@ void parse_networks (char *cmdline)
 {
     int i = 0;
     char network[16], netmask[3], tmp[16];
-    struct in_addr in_net;
 
     /* Make sure something was defined. */
     if (cmdline == NULL)
@@ -81,7 +90,7 @@ void parse_networks (char *cmdline)
 	    i++;
 	}
 
-	*cmdline++;
+	cmdline++;
     }
 }
 

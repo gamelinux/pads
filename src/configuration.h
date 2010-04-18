@@ -27,23 +27,6 @@
  *
  **************************************************************************/
 
-/* DEFINES ----------------------------------------- */
-#ifdef LINUX
-#ifndef __FAVOR_BSD
-#define __FAVOR_BSD
-#endif
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-#endif /* ifdef LINUX */
-
-
-/* INCLUDES ---------------------------------------- */
-#include "global.h"
-
-#include <stdio.h>
-#include "bstring/bstrlib.h"
-
 /* PROTOTYPES -------------------------------------- */
 void init_configuration (bstring conf_file);
 void parse_line (bstring line);

@@ -25,11 +25,23 @@
  * $Id: global.h,v 1.7 2005/04/27 13:45:47 mattshelton Exp $
  *
  **************************************************************************/
+#ifndef INCLUDED_GLOBAL_H
+#define INCLUDED_GLOBAL_H
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 /* DEFINES ------------------------------------------ */
+#ifdef LINUX
+#ifndef __FAVOR_BSD
+#define __FAVOR_BSD
+#endif
+#ifndef _BSD_SOURCE
+#define _BSD_SOURCE
+#endif
+#endif /* ifdef LINUX */
+ 
 #define MAX_LENGTH 500
 #define MAX_SERVICE 10
 #define MAX_APP 100
@@ -161,5 +173,6 @@ typedef struct _Vendor {
 /* GLOBAL VARIABLES -------------------------------- */
 extern GC gc;
 
+#endif  /* INCLUDED_GLOBAL_H */
 /* vim:expandtab:cindent:smartindent:ts=4:tw=0:sw=4:
  */

@@ -26,22 +26,11 @@
  *
  **************************************************************************/
 
-/* DEFINES ----------------------------------------- */
-#ifdef LINUX
-#ifndef __FAVOR_BSD
-#define __FAVOR_BSD
-#endif
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-#endif /* ifdef LINUX */
+#ifndef INCLUDED_OUTPUT_H
+#define INCLUDED_OUTPUT_H
 
-
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-
-#include "global.h"
-
+#include <bstring/bstrlib.h>
+#include "storage.h"
 
 /* DATA STRUCTURES --------------------------------- */
 
@@ -77,3 +66,4 @@ int print_arp_asset (struct in_addr ip_addr, char mac_addr[MAC_LEN]);
 int print_stat(struct in_addr ip_addr, u_int16_t port, unsigned short proto);
 void end_output (void);
 
+#endif /* INCLUDED_OUTPUT_H */

@@ -25,8 +25,22 @@
  * $Id: util.c,v 1.6 2005/03/11 01:31:15 mattshelton Exp $
  *
  **************************************************************************/
-#include "util.h"
 
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+
+#include <stdio.h>
+#include <stdarg.h>
+#include <sys/types.h>
+#include <strings.h>
+#include <grp.h>
+#include <pwd.h>
+#include <syslog.h>
+#include <unistd.h>
+#include <ctype.h>
+
+#include "util.h"
+#include "pads.h"
 
 /* ----------------------------------------------------------
  * FUNCTION     : strip_comment
@@ -60,7 +74,7 @@ strip_comment (char *string)
 int
 chomp (char *string, int size)
 {
-    for (size; size >= 0; size--) {
+    for ( ; size >= 0; size--) {
         if (string[size] == '\n') {
             string[size] = '\0';
             return 1;
@@ -137,7 +151,7 @@ init_pid_file (bstring pid_file, bstring user, bstring group)
         err_message("'%s' group does not appear to exist.", bdata(group));
     if ((this_user = getpwnam(bdata(user))) == NULL)
         err_message("'%s' user does not appear to exist.", bdata(user));
-    if ((chown(pid_file, this_user->pw_uid, this_group->gr_gid)) != 0)
+    if ((chown(bdata(pid_file), this_user->pw_uid, this_group->gr_gid)) != 0)
         err_message("Unable to change PID file's ownership.");
 
 }
@@ -343,7 +357,7 @@ strlcpy(char *dst, const char *src, size_t size) {
 size_t
 strlcat(char *dst, const char *src, size_t len) {
   char       *dstptr = dst;
-  size_t     dstlen, tocopy;
+  size_t     dstlen, tocopy = len;
   const char *srcptr = src;
 
   while (tocopy-- && *dstptr) dstptr++;

@@ -24,8 +24,16 @@
  * $Id: output-csv.c,v 1.6 2005/02/22 16:09:25 mattshelton Exp $
  *
  **************************************************************************/
-#include "output-csv.h"
+ 
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+ 
+#include <stdio.h>
 #include <arpa/inet.h>
+ 
+#include "output.h"
+#include "output-csv.h"
+#include "util.h"
 
 OutputCSVConf output_csv_conf;
 
@@ -41,7 +49,6 @@ int
 setup_output_csv (void)
 {
     OutputPlugin *plugin;
-    bstring name;
 
     /* Allocate and setup plugin data record. */
     plugin = (OutputPlugin*)malloc(sizeof(OutputPlugin));
@@ -107,7 +114,7 @@ init_output_csv (bstring filename)
 	}
     }
 
-    return;
+    return 0;
 }
 
 /* ----------------------------------------------------------
@@ -145,7 +152,7 @@ read_report_file (void)
     /* Clean Up */
     bdestroy(filedata);
     bstrListDestroy(lines);
-    close(fp);
+    fclose(fp);
 }
 
 /* ----------------------------------------------------------
@@ -173,7 +180,7 @@ parse_raw_report (bstring line)
 
     /* Check to see if this line has something to read. */
     if (line->data[0] == '\0' || line->data[0] == '#')
-	return;
+	return -1;
 
     /* Break line apart. */
     if ((list = bsplit(line, ',')) == NULL)
@@ -216,7 +223,7 @@ parse_raw_report (bstring line)
 	add_arp_asset(ip_addr, mac_addr, discovered);
     } else {
 	/* Everything Else */
-	add_asset(ip_addr, port, proto, service, application, discovered);
+	add_asset_csv(ip_addr, port, proto, service, application, discovered);
     }
 
     // Clean Up
@@ -251,7 +258,7 @@ print_asset_csv (Asset *rec)
 		    (biseqcstr(rec->application, "unknown") != 0))) {
 	    fprintf(output_csv_conf.file, "%s,%d,%d,%s,%s,%d\n",
 		    inet_ntoa(rec->ip_addr), ntohs(rec->port), rec->proto, bdata(rec->service),
-		    bdata(rec->application), rec->discovered);
+		    bdata(rec->application), (int)rec->discovered);
 	    fflush(output_csv_conf.file);
 	}
     } else {
@@ -279,10 +286,10 @@ print_arp_asset_csv (ArpAsset *rec)
     if (output_csv_conf.file != NULL) {
 	if (rec->mac_resolved != NULL) {
 	    fprintf(output_csv_conf.file, "%s,0,0,ARP (%s),%s,%d\n", inet_ntoa(rec->ip_addr),
-		    bdata(rec->mac_resolved), hex2mac(rec->mac_addr), rec->discovered);
+		    bdata(rec->mac_resolved), hex2mac(rec->mac_addr), (int)rec->discovered);
 	} else {
 	    fprintf(output_csv_conf.file, "%s,0,0,ARP,%s,%d\n", inet_ntoa(rec->ip_addr),
-		    hex2mac(rec->mac_addr), rec->discovered);
+		    hex2mac(rec->mac_addr), (int)rec->discovered);
 	}
 
 	fflush(output_csv_conf.file);
@@ -312,5 +319,7 @@ end_output_csv ()
 
     if (output_csv_conf.filename != NULL)
 	bdestroy(output_csv_conf.filename);
+
+    return 0;
 }
 

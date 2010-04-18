@@ -25,8 +25,17 @@
  * $Id: output-fifo.c,v 1.6 2005/02/22 16:09:25 mattshelton Exp $
  *
  **************************************************************************/
-#include "output-fifo.h"
+
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+ 
+#include <stdio.h>
+#include <sys/stat.h>
 #include <arpa/inet.h>
+ 
+#include "output.h"
+#include "output-fifo.h"
+#include "util.h"
 
 /*
  * MODULE NOTES
@@ -68,7 +77,6 @@ int
 setup_output_fifo (void)
 {
     OutputPlugin *plugin;
-    bstring name;
 
     /* Allocate and setup plugin data record. */
     plugin = (OutputPlugin*)malloc(sizeof(OutputPlugin));
@@ -99,10 +107,6 @@ setup_output_fifo (void)
 int
 init_output_fifo (bstring fifo_file)
 {
-    FILE *fp;
-    register u_int len = 0;
-    char *filename;
-
     verbose_message("Initializing FIFO output plugin.");
 
     /* Make sure report_file isn't NULL. */
@@ -117,7 +121,7 @@ init_output_fifo (bstring fifo_file)
     if ((output_fifo_conf.file = fopen(bdata(fifo_file), "w+")) == NULL)
 	err_message("Unable to open FIFO file (%s)!\n", bdata(fifo_file));
 
-    return;
+    return 0;
 }
 
 /* ----------------------------------------------------------
@@ -152,7 +156,7 @@ print_asset_fifo (Asset *rec)
 		        dip, ntohl(rec->ip_addr.s_addr), 
                         ntohs(rec->c_port), ntohs(rec->port), rec->proto, 
                         bdata(rec->service), bdata(rec->application), 
-                        rec->discovered, bdata(rec->hex_payload));
+                        (int)rec->discovered, bdata(rec->hex_payload));
 	        fflush(output_fifo_conf.file);
             }
 	}
@@ -183,12 +187,12 @@ print_arp_asset_fifo (ArpAsset *rec)
 	if (rec->mac_resolved != NULL) {
             /* pads_agent.tcl process each line until it receivs a dot by itself */
 	    fprintf(output_fifo_conf.file, "02\n%s\n%u\n%s\n%s\n%d\n.\n", ip,
-		    ntohl(rec->ip_addr.s_addr), rec->mac_resolved, 
-                    hex2mac(&rec->mac_addr), rec->discovered);
+		    ntohl(rec->ip_addr.s_addr), bdata(rec->mac_resolved), 
+                    hex2mac(rec->mac_addr), (int)rec->discovered);
 	} else {
             /* pads_agent.tcl process each line until it receivs a dot by itself */
 	    fprintf(output_fifo_conf.file, "02\n%s\n%u\nunknown\n%s\n%d\n.\n", ip,
-		    ntohl(rec->ip_addr.s_addr), hex2mac(&rec->mac_addr), rec->discovered);
+		    ntohl(rec->ip_addr.s_addr), hex2mac(rec->mac_addr), (int)rec->discovered);
 	}
 
 	fflush(output_fifo_conf.file);
@@ -220,7 +224,7 @@ print_stat_fifo (Asset *rec)
     if (output_fifo_conf.file != NULL) {
         /* pads_agent.tcl process each line until it receivs a dot by itself */
 	fprintf(output_fifo_conf.file, "03\n%s\n%d\n%d\n%d\n.\n",
-		ip, ntohs(rec->port), rec->proto, time(NULL));
+		ip, ntohs(rec->port), rec->proto, (int)time(NULL));
 	fflush(output_fifo_conf.file);
 
     } else {

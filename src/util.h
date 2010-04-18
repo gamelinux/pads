@@ -25,16 +25,7 @@
  *
  **************************************************************************/
 
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-#include <stdarg.h>
-#include <sys/types.h>
-#include <strings.h>
-#include <grp.h>
-#include <pwd.h>
-#include <syslog.h>
-
-#include "global.h"
+#include <bstring/bstrlib.h>
 
 /* PROTOTYPES -------------------------------------- */
 void strip_comment (char *string);

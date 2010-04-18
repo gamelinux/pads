@@ -26,23 +26,6 @@
  *
  **************************************************************************/
 
-/* DEFINES ----------------------------------------- */
-#ifdef LINUX
-#ifndef __FAVOR_BSD
-#define __FAVOR_BSD
-#endif
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-#endif /* ifdef LINUX */
-
-
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-#include <sys/stat.h>
-
-#include "output.h"
-
 
 /* TYPEDEFS ---------------------------------------- */
 typedef struct _OutputFIFOConf
@@ -56,6 +39,7 @@ typedef struct _OutputFIFOConf
 
 
 /* PROTOTYPES -------------------------------------- */
+int setup_output_fifo (void);
 int init_output_fifo (bstring fifo_file);
 int print_asset_fifo (Asset *rec);
 int print_arp_asset_fifo (ArpAsset *rec);

@@ -26,29 +26,6 @@
  *
  **************************************************************************/
 
-/* DEFINES ----------------------------------------- */
-#ifdef LINUX
-#ifndef __FAVOR_BSD
-#define __FAVOR_BSD
-#endif
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-#endif /* ifdef LINUX */
-
-
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-
-#include "output.h"
-
-
-/* TYPEDEFS ---------------------------------------- */
-typedef struct _OutputCSVConf
-{
-    FILE *file;
-} OutputCSVConf;
-
 
 /* PROTOTYPES -------------------------------------- */
 int setup_output_screen (void);

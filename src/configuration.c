@@ -25,7 +25,18 @@
  * $Id: configuration.c,v 1.3 2005/04/27 13:50:29 mattshelton Exp $
  *
  **************************************************************************/
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+
+#include <stdio.h>
+#include <unistd.h>
+#include "util.h"
+#include "bstring/util.h"
+#include "bstring/bstrlib.h"
+
 #include "configuration.h"
+#include "monnet.h"
+
 
 /* Variable Declarations */
 
@@ -59,7 +70,7 @@ void init_configuration (bstring filename) {
     /* Clean Up */
     bdestroy(filedata);
     bstrListDestroy(lines);
-    close(fp);
+    fclose(fp);
 }
 
 /* ----------------------------------------------------------

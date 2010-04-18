@@ -26,31 +26,6 @@
  *
  **************************************************************************/
 
-/* DEFINES ----------------------------------------- */
-#ifdef LINUX
-#ifndef __FAVOR_BSD
-#define __FAVOR_BSD
-#endif
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-#endif /* ifdef LINUX */
-
-#define I_ATTEMPTS 4
-
-
-/* INCLUDES ---------------------------------------- */
-#include <unistd.h>
-#include <stdio.h>
-#include <signal.h>
-#include <time.h>
-
-#include "global.h"
-
-
-/* TYPEDEFS ---------------------------------------- */
-typedef void (*proc_t)(const struct pcap_pkthdr *, const u_char *);
-
 
 /* PROTOTYPES -------------------------------------- */
 void process_pkt(u_char *args, const struct pcap_pkthdr* pkthdr, const u_char* packet);

@@ -24,8 +24,16 @@
  * $Id: output-screen.c,v 1.5 2005/02/22 16:09:25 mattshelton Exp $
  *
  **************************************************************************/
-#include "output-screen.h"
+ 
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+ 
+#include <stdio.h>
 #include <arpa/inet.h>
+
+#include "output.h"
+#include "output-screen.h"
+#include "util.h"
 
 /* ----------------------------------------------------------
  * FUNCTION	: setup_output_screen
@@ -39,7 +47,6 @@ int
 setup_output_screen (void)
 {
     OutputPlugin *plugin;
-    bstring name;
 
     /* Allocate and setup plugin data record. */
     plugin = (OutputPlugin*)malloc(sizeof(OutputPlugin));

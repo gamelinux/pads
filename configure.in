@@ -15,12 +15,12 @@
 # vim:expandtab:smartindent:ts=4:tw=0:sw=4:
 
 # Process this file with autoconf to produce a configure script.
-AC_INIT(pads, 1.2, matt@mattshelton.com)
+AC_INIT(pads, 1.2.1, edwardfjellskaal@gmail.com)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_PROG_RANLIB
-AC_DEFINE(PACKAGE_DATE, "06/17/05", Define the date of this release.)
+AC_DEFINE(PACKAGE_DATE, "04/18/10", Define the date of this release.)
 
 ##
 # Define the arguments that that we accept.

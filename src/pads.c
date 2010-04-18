@@ -25,7 +25,31 @@
  * $Id: pads.c,v 1.10 2005/06/15 22:00:40 mattshelton Exp $
  *
  **************************************************************************/
+/* DEFINES ----------------------------------------- */
+#define I_ATTEMPTS 4
+
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+
+#include <unistd.h>
+#include <stdio.h>
+#include <signal.h>
+#include <time.h>
+
+
+/* TYPEDEFS ---------------------------------------- */
+typedef void (*proc_t)(const struct pcap_pkthdr *, const u_char *);
+
 #include "pads.h"
+#include "util.h"
+#include "identification.h"
+#include "mac-resolution.h"
+#include "configuration.h"
+#include "output/output.h"
+#include "storage.h"
+#include "monnet.h"
+
+static int process_cmdline (int argc, char *argv[]);
 
 /* Variable Declarations */
 GC gc;                                  /* Global Configuration */
@@ -93,9 +117,13 @@ set_processor (pcap_t *this_handle)
 void
 print_header ()
 {
-    printf("pads - Passive Asset Detection System\n");
-    printf("v%s - %s\n", PACKAGE_VERSION, PACKAGE_DATE);
-    printf("Matt Shelton <matt@mattshelton.com>\n");
+    printf("[*] pads - Passive Asset Detection System\n");
+    printf("[*] v%s - %s\n", PACKAGE_VERSION, PACKAGE_DATE);
+    printf("[*] Developed by:\n");
+    printf("        Matt Shelton <matt@mattshelton.com>\n");
+    printf("[*] Maintainer of this release:\n");
+    printf("        Edward Fjellskaal <edwardfjellskaal@gmail.com>\n");
+    printf("        http://github.com/gamelinux/\n");
     printf("\n");
 }
 
@@ -377,7 +405,7 @@ end_pads(void)
  * RETURN       : 0 - Success
  *              : -1 - Error
  * ---------------------------------------------------------- */
-int
+static int
 process_cmdline (int argc, char *argv[])
 {
     int ch;
@@ -484,11 +512,6 @@ sig_hup_handler(int signal)
 int
 main(int argc, char *argv[])
 {
-    /* Variables */
-    int i;
-    struct pcap_pkthdr header;      /* The header that pcap gives us */
-    const u_char *packet;           /* The actual packet */
-
     /* Copy Command Line Args */
     prog_argc = argc;
     prog_argv = argv;

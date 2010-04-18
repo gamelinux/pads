@@ -31,7 +31,13 @@
  **************************************************************************/
 #ifndef DISABLE_VENDOR
 
+/* INCLUDES ---------------------------------------- */
+#include "global.h"
+
+#include <stdio.h>
+#include <unistd.h>
 #include "mac-resolution.h"
+#include "util.h"
 
 Vendor *vendor_list = NULL;
 
@@ -79,7 +85,7 @@ int init_mac_resolution (void) {
         bdestroy(filedata);
     if (lines != NULL)
         bstrListDestroy(lines);
-    close(fp);
+    fclose(fp);
 
     return 0;
 }
@@ -98,8 +104,6 @@ int parse_raw_mac (bstring line)
     char mac[4];
     char vendor[80];
     int m1, m2, m3;
-
-    int pos;
 
     /* Parse out the contents of the line. */
     if (sscanf(bdata(line), "%02X:%02X:%02X %80[^,\n],\n", &m1, &m2, &m3, vendor) != 4)

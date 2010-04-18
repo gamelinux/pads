@@ -26,22 +26,6 @@
  *
  **************************************************************************/
 
-/* DEFINES ----------------------------------------- */
-#ifdef LINUX
-#ifndef __FAVOR_BSD
-#define __FAVOR_BSD
-#endif
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
-#endif
-#endif /* ifdef LINUX */
-
-
-/* INCLUDES ---------------------------------------- */
-#include <stdio.h>
-
-#include "output.h"
-
 
 /* TYPEDEFS ---------------------------------------- */
 typedef struct _OutputCSVConf
@@ -63,4 +47,3 @@ int parse_raw_report (bstring line);
 int print_asset_csv (Asset *rec);
 int print_arp_asset_csv (ArpAsset *rec);
 int end_output_csv (void);
-
