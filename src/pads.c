@@ -411,7 +411,7 @@ process_cmdline (int argc, char *argv[])
     int ch;
 
     /* Process Command Line Arguments */
-    while ((ch = getopt(argc, argv, "c:d:Dg:hi:n:r:u:UvVw:")) != -1)  {
+    while ((ch = getopt(argc, argv, "c:d:Dg:hi:n:p:r:u:UvVw:")) != -1)  {
         switch (ch) {
             case 'c':
                 gc.conf_file = blk2bstr(optarg, strlen(optarg));
