@@ -1,0 +1,18 @@
+This is a fork of PADS from http://passive.sourceforge.net/
+that no longer is beeing updated by Matt Shelton since 2005.
+
+I have clean up a lot of the code, added patch from the 
+community and this version should run fine on any modern
+*nix system. (Even x86_64 with PIE (Position Independent
+Executable) and PaX (least privilege protections for
+memory pages in Linux).
+
+I have bumped the version to 1.3 for not to conflict with
+the old 1.2 version last released by Matthew J. Shelton.
+
+If you have any thoughts, patches or feature request, I will
+do my very best to add them, and to keep this community
+version agile and alive.
+
+Best reagards,
+Edward Fjellskål <edwardfjellskaal@gmail.com>
