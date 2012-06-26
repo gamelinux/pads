@@ -285,10 +285,10 @@ main_pads (void)
     /* Compile libpcap filter */
     if (prog_argc > 0) {
       if(gc.pcap_filter) {
-	strcpy(pcap_filter, "(ip or vlan) and ");
+	strcpy(pcap_filter, "");
 	strncat(pcap_filter, gc.pcap_filter, 1024);
       } else {
-	strcpy(pcap_filter, "(ip or vlan)");
+	strcpy(pcap_filter, "(arp or ip or vlan)");
       }
         log_message("Filter:  %s\n", pcap_filter);
         if (pcap_compile(gc.handle, &gc.filter, pcap_filter, 0, gc.net) == -1) {

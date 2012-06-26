@@ -194,12 +194,12 @@ int print_arp_asset (struct in_addr ip_addr, char mac_addr[MAC_LEN])
 
     /* Find Asset */
     ArpAsset *list;
-    ArpAsset *rec;
+    ArpAsset *rec = NULL;
 
     list = (ArpAsset *)get_arp_pointer();
     while (list != NULL) {
 	if (ip_addr.s_addr == list->ip_addr.s_addr
-		&& (strcmp(mac_addr, list->mac_addr) == 0)) {
+               && (memcmp(mac_addr, list->mac_addr, MAC_LEN) == 0)) {
 
 	    /* Found! */
 	    rec = list;

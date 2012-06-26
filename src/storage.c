@@ -108,7 +108,7 @@ int check_arp_asset (struct in_addr ip_addr, char mac_addr[MAC_LEN])
     rec = arp_asset_list;
     while (rec != NULL) {
 	if (rec->ip_addr.s_addr == ip_addr.s_addr
-		&& (strcmp(rec->mac_addr, mac_addr) == 0)) {
+               && (memcmp(rec->mac_addr, mac_addr, MAC_LEN) == 0)) {
 	    return 0;
 
 	} else {
@@ -211,17 +211,16 @@ void add_arp_asset (struct in_addr ip_addr, char mac_addr[MAC_LEN],
     ArpAsset *rec;
     bstring mac_resolved;
 
-    rec = (ArpAsset*)malloc(sizeof(ArpAsset));
+    rec = (ArpAsset*) calloc(1, sizeof(ArpAsset));
     rec->ip_addr.s_addr = ip_addr.s_addr;
     memcpy(&rec->mac_addr, mac_addr, MAC_LEN);
-    rec->next = NULL;
+    /*rec->next = NULL; */
+    /*rec->mac_resolved = NULL;*/
 
     /* Attempt to resolve the vendor name of the MAC address. */
 #ifndef DISABLE_VENDOR
     mac_resolved = (bstring) get_vendor(mac_addr);
     rec->mac_resolved = bstrcpy(mac_resolved);
-#else
-    rec->mac_resolved = NULL;
 #endif
 
     /*
